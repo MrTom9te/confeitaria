@@ -1,0 +1,10 @@
+meta {
+  name: Get Status
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/public/orders/{{orderId}}
+  auth: none
+}

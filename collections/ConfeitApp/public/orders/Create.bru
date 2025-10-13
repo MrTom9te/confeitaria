@@ -1,0 +1,27 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/public/orders
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "customerName": "João Silva",
+    "customerPhone": "5592999887766",
+    "productId": "{{productId}}",
+    "quantity": 2,
+    "deliveryDate": "2025-10-15",
+    "deliveryTime": "14h",
+    "observations": "Sem corante artificial, por favor"
+  }
+}
+
+script:post-response {
+  bru.setVar("orderId",res.body.data.id)
+}

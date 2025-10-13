@@ -1,0 +1,28 @@
+meta {
+  name: Create
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/products
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{jwt-token}}
+}
+
+body:json {
+  {
+    "name": "Bolo de Chocolate",
+    "description": "Delicioso bolo de chocolate com cobertura cremosa",
+    "price": 45.00,
+    "imageUrl": "https://via.placeholder.com/150"
+  }
+}
+
+script:post-response {
+  bru.setEnvVar("productId", res.body.data.id)
+}
