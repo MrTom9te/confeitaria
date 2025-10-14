@@ -1,95 +1,61 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import ProductCard from "@/components/ProductCard";
 
-export default function Home() {
+// Define the expected shape of a Product
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  imageUrl: string;
+}
+
+async function getProducts(): Promise<Product[]> {
+  try {
+    // The API is running on the same host, but we specify the port for clarity
+    const res = await fetch("http://localhost:3000/api/public/products", {
+      next: { revalidate: 60 }, // Revalidate cache every 60 seconds
+    });
+
+    if (!res.ok) {
+      // Log the error for debugging on the server
+      console.error("Failed to fetch products:", await res.text());
+      // Return an empty array to prevent the page from crashing
+      return [];
+    }
+
+    const response = await res.json();
+
+    // According to the spec, the products are in the 'data' property
+    return response.data || [];
+  } catch (error) {
+    console.error("An error occurred while fetching products:", error);
+    // In case of a network error or other issue, return an empty array
+    return [];
+  }
+}
+
+export default async function Home() {
+  const products = await getProducts();
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+    <div>
+      <h1 className="text-3xl font-bold text-chocolate mb-8">Nosso Catálogo</h1>
+      {products.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      ) : (
+        <div className="text-center bg-white p-8 rounded-lg shadow-md">
+          <p className="text-chocolate">
+            Não foi possível carregar os produtos no momento.
+          </p>
+          <p className="text-gray-600 mt-2">
+            Por favor, tente novamente mais tarde.
+          </p>
+        </div>
+      )}
     </div>
   );
 }
