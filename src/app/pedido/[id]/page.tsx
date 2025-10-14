@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useParams } from "next/navigation";
+import { apiFetch } from "@/app/lib";
 
 export default function OrderPage() {
   const params = useParams();
@@ -35,7 +36,7 @@ export default function OrderPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/public/orders", {
+      const response = await apiFetch("/api/public/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(orderData),
