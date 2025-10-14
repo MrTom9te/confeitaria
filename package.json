@@ -10,18 +10,20 @@
     "format": "biome format --write"
   },
   "dependencies": {
+    "@tailwindcss/postcss": "^4.1.14",
     "@types/jsonwebtoken": "^9.0.10",
     "jsonwebtoken": "^9.0.2",
     "next": "15.5.5",
+    "postcss": "^8.5.6",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@biomejs/biome": "2.2.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@biomejs/biome": "2.2.0"
+    "daisyui": "^5.3.1"
   }
 }
