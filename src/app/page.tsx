@@ -1,4 +1,5 @@
 import ProductCard from "@/components/ProductCard";
+import { apiFetch } from "./lib";
 
 // Define the expected shape of a Product
 interface Product {
@@ -12,7 +13,7 @@ interface Product {
 async function getProducts(): Promise<Product[]> {
   try {
     // The API is running on the same host, but we specify the port for clarity
-    const res = await fetch("/api/public/products", {
+    const res = await apiFetch("/api/public/products", {
       next: { revalidate: 30 }, // Revalidate cache every 60 seconds
     });
 
