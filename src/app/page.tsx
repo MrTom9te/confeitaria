@@ -13,7 +13,7 @@ async function getProducts(): Promise<Product[]> {
   try {
     // The API is running on the same host, but we specify the port for clarity
     const res = await fetch("http://localhost:3000/api/public/products", {
-      next: { revalidate: 60 }, // Revalidate cache every 60 seconds
+      next: { revalidate: 30 }, // Revalidate cache every 60 seconds
     });
 
     if (!res.ok) {
