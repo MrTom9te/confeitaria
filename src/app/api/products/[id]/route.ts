@@ -59,7 +59,9 @@ export async function DELETE(
   request: Request,
   { params }: { params: { id: string } },
 ) {
-  const productIndex = products.findIndex((p) => p.id === params.id);
+  const { id } = params;
+
+  const productIndex = products.findIndex((p) => p.id === id);
 
   if (productIndex === -1) {
     return NextResponse.json(
