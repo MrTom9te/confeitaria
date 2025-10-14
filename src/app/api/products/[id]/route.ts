@@ -25,9 +25,11 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
-  const product = products.find((p) => p.id === params.id);
+  const { id } = await params;
+
+  const product = products.find((p) => p.id === id);
 
   if (!product) {
     return NextResponse.json(
@@ -58,9 +60,9 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
-  const { id } = params;
+  const { id } = await params;
 
   const productIndex = products.findIndex((p) => p.id === id);
 
