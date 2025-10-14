@@ -4,9 +4,9 @@ import { orders } from "@/app/api/db";
 
 export async function GET(
   request: NextRequest,
-  context: { params: { id: string } },
+  context: { params: Promise<{ id: string }> },
 ) {
-  const { id } = context.params;
+  const { id } = await context.params;
   const order = orders.find((o) => o.id === id || o.orderNumber === id);
 
   if (!order) {
