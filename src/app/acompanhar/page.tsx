@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { apiFetch } from "../lib";
 
 interface OrderStatus {
   orderNumber: string;
@@ -23,7 +24,7 @@ export default function TrackOrderPage() {
     setOrderStatus(null);
 
     try {
-      const response = await fetch(`/api/public/orders/${orderId}`);
+      const response = await apiFetch(`/api/public/orders/${orderId}`);
       const result = await response.json();
 
       if (!response.ok || !result.success) {
