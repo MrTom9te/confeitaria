@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { Order } from "@/app/api/types";
 import { orders } from "@/app/api/db";
 
 export async function GET(
-  request: Request,
+  request: NextRequest,
   context: { params: { id: string } },
 ) {
   const { id } = context.params;
